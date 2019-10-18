@@ -88,13 +88,13 @@ Example of a configuration file for logstash:
 ```
 input {
   file{
-		type => "UST-CD13-log"
-		path => "d:\Profiles\atordjmann\Documents\ELK\logs\UST.1.log"     
+		type => "myApp-log"
+		path => "Documents\ELK\logs\myApp.log"     
 	}
 }
 
 filter {
- if [type] == "UST-CD13-log" {
+ if [type] == "myApp-log" {
      grok {
 	   #DATA : text without spaces
 	   #NUMBER : integer
