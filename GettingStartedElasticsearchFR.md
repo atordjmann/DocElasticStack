@@ -16,7 +16,7 @@
 ##Explorer le cluster
 **The REST API** : après avoir un nœud et un cluster, il faut communiquer avec. Elasticsearch fournit une REST API pour pouvoir interagir avec le cluster.
 **Cluster Health**
-Pour vérifier l’état de santé d’un cluster, on utilise l’API _cat :` GET /_cat/health ?v`
+Pour vérifier l’état de santé d’un cluster, on utilise l’API \_cat :` GET /_cat/health ?v`
 Pour obtenir la liste des nœuds d’un cluster : `GET /_cat/nodes ?v`
 Le statut est vers lorsque tout va bien, jaune lorsque toutes les données sont disponibles mais des répliques ne sont pas encore allouées, rouge lorsque des données ne sont pas disponibles.
 Lister tous les indices
@@ -43,13 +43,13 @@ POST /customer/_doc/1/_update?pretty    {  "doc": { "name": "Jane Doe" } }
 POST /customer/_doc/1/_update?pretty    {  "doc": { "name": "Jane Doe", "age": 20 } }
 POST /customer/_doc/1/_update?pretty    {  "script" : "ctx._source.age += 5"}
 ```
-Le dernier exemple utilise un script pour incrémenter l’age par 5, avec ctx._source qui se réfère au document actuel qui va être modifié.
+Le dernier exemple utilise un script pour incrémenter l’age par 5, avec ctx.\_source qui se réfère au document actuel qui va être modifié.
 On peut également modifier plusieurs documents à la fois en utilisant une requête (see docs-update-by-query API). 
 **Supprimer un document**
 `DELETE /customer/_doc/2 ?pretty`
-On peut utiliser également des requêtes (see _delete_by_query API).
+On peut utiliser également des requêtes (see \_delete_by_query API).
 **Batch processing**
-Il est possible de lancer plusieurs requêtes en même temps en utilisant la _bulk API.
+Il est possible de lancer plusieurs requêtes en même temps en utilisant la \_bulk API.
 Par exemple :
 ```
 POST /customer/_doc/_bulk?pretty
@@ -91,12 +91,12 @@ GET /bank/_search
     "size": 10 }
 ```
 **Rechercher**
-Par défaut, lors de la recherche d’un document, la totalité du fichier JSON est renvoyée. Mais il est possible de sélectionner des champs avec le paramètre _source : 
+Par défaut, lors de la recherche d’un document, la totalité du fichier JSON est renvoyée. Mais il est possible de sélectionner des champs avec le paramètre \_source : 
 ```
 GET /bank/_search   
 {   "query": { "match_all": {} },   
     "_source": ["account_number", "balance"] }
-    ```
+```
 On peut sélectionner des données correspondants à une requêtes, comme par exemple rendre les enregistrements avec un account_number de 20 : 
 ```
 GET /bank/_search  
@@ -123,9 +123,9 @@ GET /bank/_search
        "must": [         { "match": { "address": "mill" } },
          				{ "match": { "address": "lane" } }       ]     }  }}
 ```
-Pour avoir les deux, il suffit de remplacer must par should. Pour obtenir le contraire, il faut ajouter _not au mot (par exemple must_not).
+Pour avoir les deux, il suffit de remplacer must par should. Pour obtenir le contraire, il faut ajouter \_not au mot (par exemple must_not).
 Filter
-Le champ _score, est une mesure permettant de savoir à quell point un document correspond à une requête. Mais on n’en a pas besoin si l’on souhaite seulement filtrer.
+Le champ \_score, est une mesure permettant de savoir à quell point un document correspond à une requête. Mais on n’en a pas besoin si l’on souhaite seulement filtrer.
 Exemple de filtre : render un compte avec un solde entre 20000 and 30000.
 ```
 GET /bank/_search 
@@ -155,7 +155,7 @@ GET /bank/_search
 
 ## API Conventions
 **Multiples indices**
-Il est possible de faire des opérations sur des indices multiples, en utilisant par exemple les notations : « test1, test2, test3 », « _all », « test* », « te*st ». On peut également exclure : « test*, -test3 ».
+Il est possible de faire des opérations sur des indices multiples, en utilisant par exemple les notations : « test1, test2, test3 », « \_all », « test* », « te*st ». On peut également exclure : « test*, -test3 ».
 Il y a également des paramètres de requête url comme : ignore_unavailable, allow_no_indice, expand_wildcards.
 Date dans les indexes
 « Date math index name resolution » permet de chercher dans un intervalle de temps choisi. La syntaxe est : <static_name{date_math_expr{date_format|time_zone}}>.
@@ -192,7 +192,7 @@ Chaque index dans elasticsearch est divisé en shard, et chaque shard peut avoir
 Une copie se comporte comme un shard primaire, les autres copies sont des réplications. La primaire est le point d’entrée des opérations, elle répliquera les données si elles sont validées.
 
 **Index API**
-Lorsqu’on ajoute un document, le header _shards donne des informations sur l’opération d’indéxation, comme le nombre de copies shard (total), le nombre de succès et d’échec.
+Lorsqu’on ajoute un document, le header \_shards donne des informations sur l’opération d’indéxation, comme le nombre de copies shard (total), le nombre de succès et d’échec.
 On peut paramétrer le temps d’attente, timeout, ainsi que les versions.
 
 **Get API**
@@ -225,7 +225,7 @@ POST test/_doc/1/_update
         "lang": "painless",
         "params" : { "tag" : "blue" }    }}
 ```
-On peut par exemple, ajouter un tag (ctx._source.tags.add(), ctx._source.tags.contains(), ctx._source.tags.remove(), ctx._source.newchamp() ) 
+On peut par exemple, ajouter un tag (ctx.\_source.tags.add(), ctx.\_source.tags.contains(), ctx.\_source.tags.remove(), ctx.\_source.newchamp() ) 
 On peut aussi utiliser un document partiel : 
 ```
 POST test/_doc/1/_update 
@@ -259,7 +259,7 @@ GET /_mget
 {    "docs" : [     {  "_index" : "test",        "_type" : "_doc",            "_id" : "1"   },    {            "_index" : "test",            "_type" : "_doc",            "_id" : "2"        }    ]}
 ```
 **Reindex API**
-La forme la plus basique de _reindex copie les documents d’un index vers un autre.
+La forme la plus basique de \_reindex copie les documents d’un index vers un autre.
 ```
 POST _reindex 
 {  "source": {
@@ -269,8 +269,8 @@ POST _reindex
 ```
 **Term Vectors**
 Renvoie des informations et statistiques sur les termes de champs d’un document particulier, en temps réel (et non NRT).
-Exemple : GET /twitter/_doc/1/_termvectors
-Pour spécifier le champ à regarder : GET /twitter/_doc/1/_termvectors?champs=message
+Exemple : GET /twitter/\_doc/1/\_termvectors
+Pour spécifier le champ à regarder : GET /twitter/\_doc/1/\_termvectors?champs=message
 3 types de valeurs peuvent être requêter : « term information » (fréquence du terme dans le champ, positions du terme, début et fin du terme, term playloads), « term statistics » (fréquence totale du terme, fréquence de document) et « champ statistics » (combien de document contient le champ, somme des fréquences de document pour chaque terme dans un champ, somme des fréquences de termes pour chaque terme dans le champ). Il est possible de filtrer les termes à regarder, avec par exemple : max_num_terms, min_term_freq, max_word_length…).
 
 ## Search APIs
@@ -296,8 +296,8 @@ Une requête peut être faite avec une recherche DSL.
 L’élement « query » permet de définir une requête en utilisant le Query DSL.
 La pagination des résultats peut être faite en utilisant les paramètres « from » et « size ».
 Il est possible de trier les différents champs avec « sort » (avec un ordre asc ou desc, ou pour des arrays ou multi-valued champs, avec un mode min, max, sum, avg ou median). Le paramètre « missing » permet de spécifier comment traiter les documents pour lesquels le champ de tri est absent : -last ou -first.
-On peut filtrer les champs de _source, par exemple avec "_source": {   "includes": [ "obj1.*", "obj2.*" ],     "excludes": [ "*.description" ] }.
-Pour filtrer après une aggrégation, on utilisera « post_filter ».
+On peut filtrer les champs de \_source, par exemple avec "\_source": {   "includes": ["obj1.\*","obj2.\*" ],     "excludes": [\ "\*.description" ] }.
+Pour filtrer après une aggrégation, on utilisera « post\_filter ».
 
 **Rescoring** : peut améliorer la précision en réorganisant les top (100 à 500) documents rendus par une requête ou post_filter, avec la requête « rescore ».
 Pour récupérer davantage qu’une seule « page » de résultat, on peut réupérer davantage de résultats, voire plus, avec une seule recherche en utilisant l’API « scroll ».
@@ -307,9 +307,9 @@ Pour gérer la pagination, il existe également « search_after ».
 
 **Search template**
 
-L’endpoint /_search/template permet d’utiliser le langage mustache pour pré-afficher les demandes de recherche, avant leur exécution et remplir les modèles existants avec des paramètres de modèle.
+L’endpoint /\_search/template permet d’utiliser le langage mustache pour pré-afficher les demandes de recherche, avant leur exécution et remplir les modèles existants avec des paramètres de modèle.
 Par exemple : 
-GET _search/template
+GET \_search/template
 {    "source" : {
       	"query": { "match" : {   "{{my_champ}}" : "{{my_value}}"    } },
      	 "size" : "{{my_size}}"    },
@@ -374,8 +374,10 @@ Utiliser le verbe HEAD, par exemple : HEAD twitter
 
 Open / Close Index API
 Permet de fermer un index et de le rouvrir plus tard. Un index fermé n’a pratiquement plus de « overhead » dans le cluster et est bloqué pour des opérations de lecture et écriture.
-``` POST "localhost:9200/my_index/_close"
-POST "localhost:9200/my_index/_open" ```
+``` 
+POST "localhost:9200/my_index/_close"
+POST "localhost:9200/my_index/_open" 
+```
 
 **Shrink Index**
 Permet de réduire un index existant en un nouvel index avec moins de shards primaires.
