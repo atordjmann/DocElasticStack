@@ -1,0 +1,24 @@
+
+<form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" style ="margin-top:40px">
+  <label for="index">Index </label>
+  <br>
+  <input type="text" id="index" formControlName="index">
+  <br>
+  <label for="id">ID </label>
+  <br>
+  <input type="number" id="id" formControlName="id">
+  <br>
+  <label for="title">Titre </label>
+  <br>
+  <input type="text" id="title" formControlName="title">
+  <br>
+  <label for="genre">Genre </label>
+  <br>
+  <input type="text" id="genre" formControlName="genre">
+  <br>
+  <label for="categorie">Catégorie </label>
+  <br>
+  <input type="text" id="categorie" formControlName="categorie">
+  <br>
+  <button type="submit">Submit</button>
+</form>

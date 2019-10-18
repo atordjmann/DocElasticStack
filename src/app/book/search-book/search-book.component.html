@@ -1,0 +1,10 @@
+
+  <input type="text" (keyup)="search($event)" placeholder="enter title" style ="margin-top:40px">
+ 
+  <div *ngFor="let bookSource of bookSources" style ="margin-top:20px">
+    <app-book-details [book]='bookSource._source'></app-book-details>
+  </div>
+ 
+  <div *ngIf="bookSources?.length < 1">
+    <p>Not found!</p>
+  </div>

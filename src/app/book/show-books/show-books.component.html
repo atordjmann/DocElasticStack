@@ -1,0 +1,7 @@
+
+<div *ngFor="let bookSource of bookSources" style ="margin-top:40px">
+  <app-book-details [book]='bookSource._source'></app-book-details>
+</div>
+
+<h3>{{notice}}</h3>
+<button (click)="showNextPage()" *ngIf="haveNextPage">Next</button>
